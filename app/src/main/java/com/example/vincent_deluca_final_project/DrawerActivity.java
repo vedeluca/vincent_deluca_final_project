@@ -1,11 +1,8 @@
 package com.example.vincent_deluca_final_project;
 
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 
-import com.example.vincent_deluca_final_project.ui.main.SectionsPagerAdapter;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -14,10 +11,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.vincent_deluca_final_project.databinding.ActivityDrawerBinding;
-import com.google.android.material.tabs.TabLayout;
 
 public class DrawerActivity extends AppCompatActivity {
 
@@ -43,13 +38,6 @@ public class DrawerActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_drawer);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        SectionsPagerAdapter sectionsPagerAdapter =
-                new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = binding.appBarDrawer.viewPager;
-        viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = binding.appBarDrawer.tabs;
-        tabs.setupWithViewPager(viewPager);
     }
 
     @Override
