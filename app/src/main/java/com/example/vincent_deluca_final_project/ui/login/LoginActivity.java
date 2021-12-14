@@ -72,12 +72,10 @@ public class LoginActivity extends AppCompatActivity {
             }
             if (loginResult.getSuccess() != null) {
                 updateUiWithUser(loginResult.getSuccess());
+                startActivity(new Intent(LoginActivity.this, DrawerActivity.class));
+                setResult(Activity.RESULT_OK);
+                finish();
             }
-            setResult(Activity.RESULT_OK);
-            startActivity(new Intent(LoginActivity.this, DrawerActivity.class));
-            //Complete and destroy login activity once successful
-            finish();
-
         });
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
@@ -116,11 +114,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    private void showLoginFailed(Exception error) {
+        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
