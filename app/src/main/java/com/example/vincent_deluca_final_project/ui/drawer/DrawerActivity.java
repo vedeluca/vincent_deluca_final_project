@@ -15,6 +15,8 @@ import com.example.vincent_deluca_final_project.ui.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.example.vincent_deluca_final_project.data.graphics.CircleTransform;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,6 +27,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vincent_deluca_final_project.databinding.ActivityDrawerBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 public class DrawerActivity extends AppCompatActivity {
@@ -32,6 +39,7 @@ public class DrawerActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityDrawerBinding binding;
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
     private FirebaseUser currentUser;
 
     @Override
@@ -54,9 +62,43 @@ public class DrawerActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        //TODO: update this when change is made
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
+        loadProfile();
+
+        ChildEventListener usersRefListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.getKey().equals(currentUser.getUid()))
+                    loadProfile();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        DatabaseReference usersRef = firebaseDatabase.getReference("Users");
+        usersRef.addChildEventListener(usersRefListener);
+    }
+
+    public void loadProfile() {
         Uri photoUrl = currentUser.getPhotoUrl();
         String displayName = currentUser.getDisplayName();
         String email = currentUser.getEmail();

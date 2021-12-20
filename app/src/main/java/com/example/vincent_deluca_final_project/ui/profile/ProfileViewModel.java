@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,6 +14,8 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -20,15 +23,17 @@ import java.util.UUID;
 
 public class ProfileViewModel extends ViewModel {
     private final FirebaseUser currentUser;
+    private final FirebaseDatabase firebaseDatabase;
     private final MutableLiveData<UpdateResult> updateResult = new MutableLiveData<>();
     private ContentResolver resolver;
     private Uri imageUri = null;
 
     public ProfileViewModel() {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
     }
 
-    public void setResolver(ContentResolver resolver){
+    public void setResolver(ContentResolver resolver) {
         this.resolver = resolver;
     }
 
@@ -36,11 +41,11 @@ public class ProfileViewModel extends ViewModel {
         return updateResult;
     }
 
-    public Uri getProfilePicture(){
+    public Uri getProfilePicture() {
         return currentUser.getPhotoUrl();
     }
 
-    public Uri getImageUri(){
+    public Uri getImageUri() {
         return imageUri;
     }
 
@@ -85,8 +90,10 @@ public class ProfileViewModel extends ViewModel {
         if (hasDisplayName)
             profileBuilder = profileBuilder.setDisplayName(displayName);
         UserProfileChangeRequest profileUpdates = profileBuilder.build();
-        currentUser.updateProfile(profileUpdates).addOnSuccessListener(task ->
-                updateResult.setValue(new UpdateResult(hasProfilePicture, hasDisplayName)))
-                .addOnFailureListener(e -> updateResult.setValue(new UpdateResult(e)));
+        currentUser.updateProfile(profileUpdates).addOnSuccessListener(task -> {
+            DatabaseReference usersRef = firebaseDatabase.getReference("Users");
+            usersRef.child(currentUser.getUid()).setValue(UUID.randomUUID().toString());
+            updateResult.setValue(new UpdateResult(hasProfilePicture, hasDisplayName));
+        }).addOnFailureListener(e -> updateResult.setValue(new UpdateResult(e)));
     }
 }
