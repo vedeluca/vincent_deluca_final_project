@@ -1,8 +1,13 @@
 package com.example.vincent_deluca_final_project;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.vincent_deluca_final_project.databinding.NavHeaderDrawerBinding;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -13,6 +18,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.vincent_deluca_final_project.databinding.ActivityDrawerBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class DrawerActivity extends AppCompatActivity {
 
@@ -38,6 +48,19 @@ public class DrawerActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_drawer);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        Uri photoUrl = currentUser.getPhotoUrl();
+        String displayName = currentUser.getDisplayName();
+        String email = currentUser.getEmail();
+        View headerLayout = binding.navView.getHeaderView(0);
+        ImageView profilePicture = headerLayout.findViewById(R.id.profilePicture);
+        TextView profileName = headerLayout.findViewById(R.id.profileName);
+        TextView profileEmail = headerLayout.findViewById(R.id.profileEmail);
+        Picasso.get().load(photoUrl).into(profilePicture);
+        profileName.setText(displayName);
+        profileEmail.setText(email);
     }
 
     @Override
