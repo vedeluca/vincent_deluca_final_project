@@ -1,7 +1,10 @@
 package com.example.vincent_deluca_final_project.ui.profile;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
-
+import android.provider.MediaStore;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,23 +21,47 @@ import java.util.UUID;
 public class ProfileViewModel extends ViewModel {
     private final FirebaseUser currentUser;
     private final MutableLiveData<UpdateResult> updateResult = new MutableLiveData<>();
+    private ContentResolver resolver;
+    private Uri imageUri = null;
 
     public ProfileViewModel() {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    }
+
+    public void setResolver(ContentResolver resolver){
+        this.resolver = resolver;
     }
 
     public LiveData<UpdateResult> getUpdateResult() {
         return updateResult;
     }
 
-    public void updateProfile(Uri imageUri, String displayName) {
+    public Uri getProfilePicture(){
+        return currentUser.getPhotoUrl();
+    }
+
+    public Uri getImageUri(){
+        return imageUri;
+    }
+
+    public Intent takePhoto() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+        imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        return intent;
+    }
+
+    public void updateProfile(String displayName) {
         if (imageUri != null)
-            updateProfilePicture(imageUri, displayName);
+            updateProfilePicture(displayName);
         else
             profileBuilder(null, displayName);
     }
 
-    private void updateProfilePicture(Uri imageUri, String displayName) {
+    private void updateProfilePicture(String displayName) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final String fileNameInStorage = UUID.randomUUID().toString();
         String path = fileNameInStorage + ".jpg";
