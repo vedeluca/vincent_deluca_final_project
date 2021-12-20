@@ -22,4 +22,6 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_profile">Edit Profile</string>
+    <string name="save">Save</string>
+    <string name="display_name">Display Name</string>
 </resources>

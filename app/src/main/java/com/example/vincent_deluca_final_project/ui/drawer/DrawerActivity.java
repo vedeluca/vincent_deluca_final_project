@@ -1,6 +1,5 @@
-package com.example.vincent_deluca_final_project;
+package com.example.vincent_deluca_final_project.ui.drawer;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,10 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.vincent_deluca_final_project.ui.graphics.CircleTransform;
+import com.example.vincent_deluca_final_project.R;
 import com.example.vincent_deluca_final_project.ui.login.LoginActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.example.vincent_deluca_final_project.data.graphics.CircleTransform;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -31,6 +32,7 @@ public class DrawerActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityDrawerBinding binding;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,9 @@ public class DrawerActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        //TODO: update this when change is made
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        currentUser = firebaseAuth.getCurrentUser();
         Uri photoUrl = currentUser.getPhotoUrl();
         String displayName = currentUser.getDisplayName();
         String email = currentUser.getEmail();
@@ -77,6 +80,9 @@ public class DrawerActivity extends AppCompatActivity {
 
     private boolean signOut() {
         firebaseAuth.signOut();
+        String displayName = currentUser.getDisplayName();
+        String signOutMessage = displayName + " signed out.";
+        Toast.makeText(this, signOutMessage, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         return true;

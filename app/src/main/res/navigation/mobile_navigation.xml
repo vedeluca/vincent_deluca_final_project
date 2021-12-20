@@ -15,5 +15,9 @@
         android:id="@+id/nav_profile"
         android:name="com.example.vincent_deluca_final_project.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 </navigation>

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vincent_deluca_final_project">
         <activity
-            android:name=".DrawerActivity"
+            android:name=".ui.drawer.DrawerActivity"
             android:exported="false"
             android:label="@string/title_activity_drawer"
             android:theme="@style/Theme.Vincent_deluca_final_project.NoActionBar" />

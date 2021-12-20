@@ -1,4 +1,4 @@
-package com.example.vincent_deluca_final_project.ui.graphics;
+package com.example.vincent_deluca_final_project.data.graphics;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
