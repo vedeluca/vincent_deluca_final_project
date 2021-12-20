@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.vincent_deluca_final_project.databinding.NavHeaderDrawerBinding;
+import com.example.vincent_deluca_final_project.ui.graphics.CircleTransform;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -20,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.vincent_deluca_final_project.databinding.ActivityDrawerBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 public class DrawerActivity extends AppCompatActivity {
@@ -42,7 +40,7 @@ public class DrawerActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_profile)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_drawer);
@@ -58,7 +56,7 @@ public class DrawerActivity extends AppCompatActivity {
         ImageView profilePicture = headerLayout.findViewById(R.id.profilePicture);
         TextView profileName = headerLayout.findViewById(R.id.profileName);
         TextView profileEmail = headerLayout.findViewById(R.id.profileEmail);
-        Picasso.get().load(photoUrl).into(profilePicture);
+        Picasso.get().load(photoUrl).transform(new CircleTransform()).into(profilePicture);
         profileName.setText(displayName);
         profileEmail.setText(email);
     }

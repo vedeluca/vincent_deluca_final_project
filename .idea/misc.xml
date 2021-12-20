@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Google Drive/Syracuse/Mobile Application Programming/vincent_deluca_final_project/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.15185185185185185" />
         <entry key="..\:/Google Drive/Syracuse/Mobile Application Programming/vincent_deluca_final_project/app/src/main/res/layout/activity_drawer.xml" value="0.17426545086119555" />
         <entry key="..\:/Google Drive/Syracuse/Mobile Application Programming/vincent_deluca_final_project/app/src/main/res/layout/activity_login.xml" value="0.17426545086119555" />
         <entry key="..\:/Google Drive/Syracuse/Mobile Application Programming/vincent_deluca_final_project/app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -14,6 +15,7 @@
         <entry key="..\:/Google Drive/Syracuse/Mobile Application Programming/vincent_deluca_final_project/app/src/main/res/layout/fragment_slideshow.xml" value="0.17426545086119555" />
         <entry key="..\:/Google Drive/Syracuse/Mobile Application Programming/vincent_deluca_final_project/app/src/main/res/layout/nav_header_drawer.xml" value="0.43928035982008995" />
         <entry key="..\:/Google Drive/Syracuse/Mobile Application Programming/vincent_deluca_final_project/app/src/main/res/menu/activity_main_drawer.xml" value="0.3020408163265306" />
+        <entry key="..\:/Google Drive/Syracuse/Mobile Application Programming/vincent_deluca_final_project/app/src/main/res/menu/drawer.xml" value="0.2015625" />
       </map>
     </option>
   </component>
