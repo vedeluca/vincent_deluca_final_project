@@ -21,18 +21,26 @@ import android.widget.Toast;
 import com.example.vincent_deluca_final_project.ui.drawer.DrawerActivity;
 import com.example.vincent_deluca_final_project.R;
 import com.example.vincent_deluca_final_project.databinding.ActivityLoginBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
-    private ActivityLoginBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(LoginActivity.this, DrawerActivity.class));
+            setResult(Activity.RESULT_OK);
+            finish();
+        }
 
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
