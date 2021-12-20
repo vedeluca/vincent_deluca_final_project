@@ -6,19 +6,27 @@ import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
-import com.example.vincent_deluca_final_project.data.LoginRepository;
-import com.example.vincent_deluca_final_project.data.Result;
-import com.example.vincent_deluca_final_project.data.model.LoggedInUser;
 import com.example.vincent_deluca_final_project.R;
+import com.example.vincent_deluca_final_project.data.model.User;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.List;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+    private final FirebaseAuth firebaseAuth;
+    private final FirebaseDatabase firebaseDatabase;
 
-    LoginViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    LoginViewModel() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
     }
 
     LiveData<LoginFormState> getLoginFormState() {
@@ -29,16 +37,27 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
-
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+    public void login(String email, String password) {
+        firebaseAuth.fetchSignInMethodsForEmail(email)
+                .addOnSuccessListener(result -> {
+                    List<String> signInMethods = result.getSignInMethods();
+                    if (signInMethods.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
+                        firebaseAuth.signInWithEmailAndPassword(email, password)
+                                .addOnSuccessListener(authResult -> loginResult.setValue(new LoginResult(new LoggedInUserView(email))))
+                                .addOnFailureListener(el -> loginResult.setValue(new LoginResult(el)));
+                    } else {
+                        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                                .addOnSuccessListener(authResult -> {
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    FirebaseUser user = authResult.getUser();
+                                    DatabaseReference usersRef = database.getReference("Users");
+                                    usersRef.child(user.getUid()).setValue(new User(email, email));
+                                    loginResult.setValue(new LoginResult(new LoggedInUserView(email)));
+                                })
+                                .addOnFailureListener(el -> loginResult.setValue(new LoginResult(el)));
+                    }
+                })
+                .addOnFailureListener(e -> loginResult.setValue(new LoginResult(e)));
     }
 
     public void loginDataChanged(String username, String password) {

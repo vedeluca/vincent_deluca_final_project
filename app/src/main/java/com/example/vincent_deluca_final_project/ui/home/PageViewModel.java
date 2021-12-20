@@ -1,4 +1,4 @@
-package com.example.vincent_deluca_final_project.ui.main;
+package com.example.vincent_deluca_final_project.ui.home;
 
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;

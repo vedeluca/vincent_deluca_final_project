@@ -1,4 +1,7 @@
 *.iml
+/.gradle/
+/app/build/
+/app/build/intermediates/javac/debug/classes/
 .gradle
 /local.properties
 /.idea/caches
@@ -13,3 +16,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+.idea/misc.xml
+.idea/misc.xml

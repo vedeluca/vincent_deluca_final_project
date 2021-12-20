@@ -1,4 +1,4 @@
-package com.example.vincent_deluca_final_project.ui.main;
+package com.example.vincent_deluca_final_project.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.vincent_deluca_final_project.R;
 import com.example.vincent_deluca_final_project.databinding.FragmentMainBinding;
 
 /**
