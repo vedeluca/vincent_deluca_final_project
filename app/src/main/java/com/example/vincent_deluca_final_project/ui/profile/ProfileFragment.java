@@ -20,6 +20,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.vincent_deluca_final_project.R;
 import com.example.vincent_deluca_final_project.data.graphics.CircleTransform;
 import com.example.vincent_deluca_final_project.databinding.FragmentProfileBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
@@ -56,11 +59,15 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
-        Picasso.get()
-                .load(profileViewModel.getProfilePicture())
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseDatabase.getReference("Users")
+                .child(currentUser.getUid())
+                .get().addOnSuccessListener(dataSnapshot -> Picasso.get()
+                .load(dataSnapshot.child("url").getValue().toString())
                 .transform(new CircleTransform())
-                .into(binding.profileImage);
+                .into(binding.profileImage));
+
         String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA};

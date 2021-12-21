@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.vincent_deluca_final_project.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -39,10 +40,6 @@ public class ProfileViewModel extends ViewModel {
 
     public LiveData<UpdateResult> getUpdateResult() {
         return updateResult;
-    }
-
-    public Uri getProfilePicture() {
-        return currentUser.getPhotoUrl();
     }
 
     public Uri getImageUri() {
@@ -84,16 +81,12 @@ public class ProfileViewModel extends ViewModel {
             updateResult.setValue(new UpdateResult(new Exception("No changes made to profile")));
             return;
         }
-        UserProfileChangeRequest.Builder profileBuilder = new UserProfileChangeRequest.Builder();
+        DatabaseReference usersRef = firebaseDatabase.getReference("Users");
+        DatabaseReference userRef = usersRef.child(currentUser.getUid());
         if (hasProfilePicture)
-            profileBuilder = profileBuilder.setPhotoUri(uri);
+            userRef.child("url").setValue(uri.toString());
         if (hasDisplayName)
-            profileBuilder = profileBuilder.setDisplayName(displayName);
-        UserProfileChangeRequest profileUpdates = profileBuilder.build();
-        currentUser.updateProfile(profileUpdates).addOnSuccessListener(task -> {
-            DatabaseReference usersRef = firebaseDatabase.getReference("Users");
-            usersRef.child(currentUser.getUid()).setValue(UUID.randomUUID().toString());
-            updateResult.setValue(new UpdateResult(hasProfilePicture, hasDisplayName));
-        }).addOnFailureListener(e -> updateResult.setValue(new UpdateResult(e)));
+            userRef.child("displayName").setValue(displayName);
+        updateResult.setValue(new UpdateResult(hasProfilePicture, hasDisplayName));
     }
 }

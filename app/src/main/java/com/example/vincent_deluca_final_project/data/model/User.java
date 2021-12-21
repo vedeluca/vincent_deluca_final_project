@@ -8,10 +8,12 @@ import com.google.firebase.database.ServerValue;
 public class User {
     public String displayName;
     public String email;
+    public String url;
 
-    public User(String displayName, String email) {
+    public User(String displayName, String email, String url) {
         this.displayName = displayName;
         this.email = email;
+        this.url = url;
     }
 
     public User() {

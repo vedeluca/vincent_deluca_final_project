@@ -11,12 +11,12 @@ public class DiceRoller {
         calculations.append(d);
         calculations.append(" = ");
         for (int i = 0; i < n; i++) {
-            int random = ThreadLocalRandom.current().nextInt(1, d);
+            int random = ThreadLocalRandom.current().nextInt(1, d + 1);
             total += random;
             calculations.append(random);
             if (i + 1 < n)
                 calculations.append(" + ");
         }
-        return new DiceResults(total, calculations.toString());
+        return new DiceResults(String.valueOf(total), calculations.toString());
     }
 }

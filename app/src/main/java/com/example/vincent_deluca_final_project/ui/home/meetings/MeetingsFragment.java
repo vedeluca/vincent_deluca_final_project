@@ -1,4 +1,4 @@
-package com.example.vincent_deluca_final_project.ui.home;
+package com.example.vincent_deluca_final_project.ui.home.meetings;
 
 import android.os.Bundle;
 

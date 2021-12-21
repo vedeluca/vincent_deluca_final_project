@@ -4,7 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.vincent_deluca_final_project.databinding.FragmentDiceChatBinding;
+import com.example.vincent_deluca_final_project.ui.home.dice.DiceChatFragment;
+import com.example.vincent_deluca_final_project.ui.home.meetings.MeetingsFragment;
 
 
 /**

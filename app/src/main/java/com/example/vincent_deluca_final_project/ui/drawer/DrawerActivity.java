@@ -41,6 +41,7 @@ public class DrawerActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseUser currentUser;
+    private String displayName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +66,19 @@ public class DrawerActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
-        loadProfile();
+        firebaseDatabase.getReference("Users")
+                .child(currentUser.getUid())
+                .get().addOnSuccessListener(this::loadProfile);
 
         ChildEventListener usersRefListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.getKey().equals(currentUser.getUid()))
-                    loadProfile();
+                    loadProfile(snapshot);
             }
 
             @Override
@@ -98,10 +100,10 @@ public class DrawerActivity extends AppCompatActivity {
         usersRef.addChildEventListener(usersRefListener);
     }
 
-    public void loadProfile() {
-        Uri photoUrl = currentUser.getPhotoUrl();
-        String displayName = currentUser.getDisplayName();
-        String email = currentUser.getEmail();
+    public void loadProfile(DataSnapshot userRef) {
+        String photoUrl = userRef.child("url").getValue().toString();
+        displayName = userRef.child("displayName").getValue().toString();
+        String email = userRef.child("email").getValue().toString();
         View headerLayout = binding.navView.getHeaderView(0);
         ImageView profilePicture = headerLayout.findViewById(R.id.profilePicture);
         TextView profileName = headerLayout.findViewById(R.id.profileName);
@@ -122,7 +124,6 @@ public class DrawerActivity extends AppCompatActivity {
 
     private boolean signOut() {
         firebaseAuth.signOut();
-        String displayName = currentUser.getDisplayName();
         String signOutMessage = displayName + " signed out.";
         Toast.makeText(this, signOutMessage, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, LoginActivity.class);
