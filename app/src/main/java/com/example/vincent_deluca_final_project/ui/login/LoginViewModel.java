@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.UUID;
 
 public class LoginViewModel extends ViewModel {
 
@@ -75,8 +76,11 @@ public class LoginViewModel extends ViewModel {
                                 .setDisplayName(email)
                                 .setPhotoUri(uri)
                                 .build();
-                        user.updateProfile(profileUpdates).addOnSuccessListener(task ->
-                                loginResult.setValue(new LoginResult(new LoggedInUserView(email))));
+                        user.updateProfile(profileUpdates).addOnSuccessListener(task -> {
+                            DatabaseReference usersRef = firebaseDatabase.getReference("Users");
+                            usersRef.child(user.getUid()).setValue(UUID.randomUUID().toString());
+                            loginResult.setValue(new LoginResult(new LoggedInUserView(email)));
+                        });
                     });
 
                 })
