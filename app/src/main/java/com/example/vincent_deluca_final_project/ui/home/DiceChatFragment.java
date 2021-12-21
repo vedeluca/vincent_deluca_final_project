@@ -4,18 +4,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.vincent_deluca_final_project.data.dice.DiceResults;
+import com.example.vincent_deluca_final_project.data.dice.DiceRoller;
 import com.example.vincent_deluca_final_project.databinding.DiceButtonsBinding;
 import com.example.vincent_deluca_final_project.databinding.FragmentDiceChatBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class DiceChatFragment extends Fragment {
 
     private FragmentDiceChatBinding chatBinding;
     private DiceButtonsBinding buttonsBinding;
+    private FirebaseUser currentUser;
+    private DatabaseReference diceRef;
 
     public DiceChatFragment() {
 
@@ -28,6 +35,9 @@ public class DiceChatFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         chatBinding = FragmentDiceChatBinding.inflate(inflater, container, false);
         View view = chatBinding.getRoot();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        diceRef = database.getReference("Dice");
         buttonsBinding = chatBinding.diceButtons;
         buttonsBinding.diceNumber.setMinValue(1);
         buttonsBinding.diceNumber.setMaxValue(20);
@@ -49,7 +59,15 @@ public class DiceChatFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-
+            int n = buttonsBinding.diceNumber.getValue();
+            DiceResults diceResults = DiceRoller.roll(d, n);
+            diceResults.displayName = currentUser.getDisplayName();
+            diceResults.uid = currentUser.getUid();
+            diceResults.url = currentUser.getPhotoUrl().toString();
+            DatabaseReference newDiceRef = diceRef.push();
+            newDiceRef.setValue(diceResults).addOnSuccessListener(v -> {
+                //TODO: maybe some sort of push notification?
+            });
         }
     }
 }
