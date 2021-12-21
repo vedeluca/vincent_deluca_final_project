@@ -12,7 +12,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="100dp"
-        android:layout_height="100dp"/>
+        android:layout_height="100dp"
+        android:contentDescription="@string/profile_picture" />
     <LinearLayout
         android:layout_marginTop="10dp"
         android:orientation="vertical"

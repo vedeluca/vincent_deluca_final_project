@@ -19,11 +19,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
-        <item name="android:textColorPrimary">@color/white</item>
-    </style>
-
-
     <style name="Theme.Vincent_deluca_final_project.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Vincent_deluca_final_project.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

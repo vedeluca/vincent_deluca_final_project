@@ -72,15 +72,10 @@ public class LoginViewModel extends ViewModel {
                     StorageReference pathReference = FirebaseStorage
                             .getInstance().getReference("default.jpg");
                     pathReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(email)
-                                .setPhotoUri(uri)
-                                .build();
-                        user.updateProfile(profileUpdates).addOnSuccessListener(task -> {
-                            DatabaseReference usersRef = firebaseDatabase.getReference("Users");
-                            usersRef.child(user.getUid()).setValue(UUID.randomUUID().toString());
-                            loginResult.setValue(new LoginResult(new LoggedInUserView(email)));
-                        });
+                        DatabaseReference usersRef = firebaseDatabase.getReference("Users");
+                        DatabaseReference userRef = usersRef.child(user.getUid());
+                        userRef.setValue(new User(email, email, uri.toString()));
+                        loginResult.setValue(new LoginResult(new LoggedInUserView(email)));
                     });
 
                 })
