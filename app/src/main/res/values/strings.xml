@@ -21,7 +21,7 @@
     <string name="action_logout">Log Out</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_profile">Edit Profile</string>
+    <string name="menu_profile">Profile</string>
     <string name="save">Save</string>
     <string name="display_name">Display Name</string>
     <!-- TODO: Remove or change this placeholder text -->

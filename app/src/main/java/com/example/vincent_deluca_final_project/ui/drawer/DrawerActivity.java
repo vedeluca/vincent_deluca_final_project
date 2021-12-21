@@ -103,14 +103,11 @@ public class DrawerActivity extends AppCompatActivity {
     public void loadProfile(DataSnapshot userRef) {
         String photoUrl = userRef.child("url").getValue().toString();
         displayName = userRef.child("displayName").getValue().toString();
-        String email = userRef.child("email").getValue().toString();
         View headerLayout = binding.navView.getHeaderView(0);
         ImageView profilePicture = headerLayout.findViewById(R.id.profilePicture);
         TextView profileName = headerLayout.findViewById(R.id.profileName);
-        TextView profileEmail = headerLayout.findViewById(R.id.profileEmail);
         Picasso.get().load(photoUrl).transform(new CircleTransform()).into(profilePicture);
         profileName.setText(displayName);
-        profileEmail.setText(email);
     }
 
     @Override

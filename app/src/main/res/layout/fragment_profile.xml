@@ -23,6 +23,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
+        <TextView
+            android:id="@+id/profile_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            tools:text="email@email.com"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/displayNameLayout"
             android:layout_width="match_parent"
@@ -31,7 +37,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/displayNameText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:text="Vince"/>
         </com.google.android.material.textfield.TextInputLayout>
         <Button
             android:id="@+id/saveBtn"

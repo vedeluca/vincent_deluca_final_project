@@ -63,10 +63,14 @@ public class ProfileFragment extends Fragment {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseDatabase.getReference("Users")
                 .child(currentUser.getUid())
-                .get().addOnSuccessListener(dataSnapshot -> Picasso.get()
-                .load(dataSnapshot.child("url").getValue().toString())
-                .transform(new CircleTransform())
-                .into(binding.profileImage));
+                .get().addOnSuccessListener(dataSnapshot -> {
+            binding.displayNameText.setText(dataSnapshot.child("displayName").getValue().toString());
+            binding.profileEmail.setText(dataSnapshot.child("email").getValue().toString());
+            Picasso.get()
+                    .load(dataSnapshot.child("url").getValue().toString())
+                    .transform(new CircleTransform())
+                    .into(binding.profileImage);
+        });
 
         String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
