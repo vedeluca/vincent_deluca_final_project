@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.vincent_deluca_final_project.databinding.FragmentDiceChatBinding;
+
 
 /**
  * A [FragmentStateAdapter] that returns a fragment corresponding to
@@ -18,7 +20,10 @@ public class SectionsPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return PlaceholderFragment.newInstance(position + 1);
+        if (position == 0)
+            return new MeetingsFragment();
+        else
+            return new DiceChatFragment();
     }
 
     @Override

@@ -23,13 +23,15 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        String[] tabTitle = {"Meetings", "Dice"};
+
         SectionsPagerAdapter sectionsPagerAdapter =
                 new SectionsPagerAdapter(this);
         ViewPager2 viewPager = binding.viewPager;
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = binding.tabs;
         new TabLayoutMediator(tabs, viewPager, (tab, position) -> {
-            tab.setText("OBJECT " + (position + 1));
+            tab.setText(tabTitle[position]);
         }).attach();
         return root;
     }
