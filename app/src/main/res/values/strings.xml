@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">vincent_deluca_final_project</string>
+    <string name="app_name">Dice Chat</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
