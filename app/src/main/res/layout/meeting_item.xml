@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:background="@drawable/rounded_message_gray"
+    android:maxWidth="250dp"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textColor="@android:color/black">
+
+    <TextView
+        android:id="@+id/meeting_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        tools:text="Weekly Campaign" />
+
+    <TextView
+        android:id="@+id/meeting_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="3short description" />
+
+    <TextView
+        android:id="@+id/meeting_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="12/21/21" />
+
+</LinearLayout>
